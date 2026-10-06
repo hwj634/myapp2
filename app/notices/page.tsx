@@ -13,7 +13,7 @@ export default async function NoticesPage() {
           href="/notices/new"
           className="text-sm font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
         >
-          + 새 글 작성
+          ← notices 페이지로 이동(파일기반 리소스)
         </Link>
       </div>
       <ul className="flex flex-col gap-4">
