@@ -29,6 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <body className="min-h-full flex flex-col">
         <SiteHeader />
+
         {children}
       </body>
     </html>

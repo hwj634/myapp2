@@ -1,30 +1,81 @@
 "use server";
+// 이 파일의 함수들은 Server Action입니다. 클라이언트 컴포넌트에서
+// 그냥 함수처럼 import해서 호출하면, Next.js가 자동으로 서버에
+// 요청을 보내고 결과를 받아옵니다 — 별도의 API 엔드포인트를
+// 직접 만들지 않아도 됩니다. (6주차 MongoDB CRUD에서 본격적으로 사용)
 
 import { revalidatePath } from "next/cache";
-import { likeProduct as likeProductinDb } from "./products";
-import { createNotice } from "./notices";
 import { redirect } from "next/navigation";
-export async function likeproductAction(id: string) {
-  const newLikes = await likeProductinDb(id);
+import { AuthError } from "next-auth";
+import { likeProduct as likeProductInDb } from "@/lib/products";
+import { createNotice } from "@/lib/notices";
+import { createUser } from "@/lib/users";
+import { signIn, signOut } from "@/auth";
+
+export async function likeProductAction(id: string) {
+  const newLikes = await likeProductInDb(id);
+  // 이 경로를 다시 그리도록 Next.js에 알려줍니다 — 다른 탭/새로고침에서도
+  // 최신 좋아요 수가 보이게 합니다.
   revalidatePath(`/products/${id}`);
   return newLikes;
 }
 
+// 4주차의 likeProductAction과 달리, 이 액션은 <form action={...}>에
+// 직접 연결됩니다. 함수를 호출하는 자바스크립트 코드 없이도 폼이
+// 제출되면 Next.js가 FormData를 담아 이 함수를 서버에서 실행합니다.
+// 즉 이 페이지는 클라이언트 자바스크립트가 없어도 기본 동작이 가능합니다.
 export async function createNoticeAction(formData: FormData) {
-  const title = String(formData.get("title") ?? "").trim(); // 제목 입력값 가져오기
-  const author = String(formData.get("author") ?? "").trim(); // 작성자 입력값 가져오기
-  const content = String(formData.get("content") ?? "").trim(); // 내용 입력값 가져오기
+  const title = String(formData.get("title") ?? "").trim();
+  const author = String(formData.get("author") ?? "").trim();
+  const content = String(formData.get("content") ?? "").trim();
 
   if (!title || !author || !content) {
-    // 제목, 작성자, 내용 중 하나라도 비어있으면 에러를 던집니다.
-    // trim()을 사용해 공백만 있는 경우도 체크합니다.
-    // 예를 들어, title이 "   "이면 trim() 후에는 ""가 되어 false로 평가됩니다.
+    // 실습 단계의 아주 단순한 검증입니다.
+    // 실제 서비스라면 에러 상태를 돌려주고 폼에 메시지를 보여줘야 합니다.
     throw new Error("제목, 작성자, 내용을 모두 입력해주세요.");
-    // 에러 메시지는 클라이언트에서 catch할 때 사용됩니다.
   }
 
-  const notice = await createNotice({ title, author, content }); // createNotice 함수를 호출해 새 공지사항을 생성합니다.
+  const notice = await createNotice({ title, author, content });
   revalidatePath("/notices");
-  // 공지사항 목록 페이지를 다시 렌더링하도록 경로를 재검증합니다.
-  redirect(`/notices/${notice.id}`); // 새로 생성된 공지사항 페이지로 리다이렉트합니다.
+  redirect(`/notices/${notice.id}`);
+}
+
+// 회원가입: 비밀번호를 해싱해 User 컬렉션에 저장한 뒤, 곧바로 로그인까지
+// 이어서 처리합니다. signIn()이 성공하면 내부적으로 리다이렉트를 던지므로
+// registerAction은 반환값을 따로 처리하지 않습니다.
+export async function registerAction(formData: FormData) {
+  const name = String(formData.get("name") ?? "").trim();
+  const email = String(formData.get("email") ?? "")
+    .trim()
+    .toLowerCase();
+  const password = String(formData.get("password") ?? "");
+
+  if (!name || !email || !password) {
+    throw new Error("이름, 이메일, 비밀번호를 모두 입력해주세요.");
+  }
+  if (password.length < 8) {
+    throw new Error("비밀번호는 8자 이상이어야 합니다.");
+  }
+
+  await createUser({ name, email, password });
+  await signIn("credentials", { email, password, redirectTo: "/" });
+}
+
+// 로그인. Auth.js는 로그인 실패도 "에러를 던지는 방식"으로 알려줍니다.
+// AuthError만 따로 잡아서 /login?error=1 로 돌려보내고, 그 외의 에러
+// (Next.js의 리다이렉트 신호 포함)는 그대로 다시 던져야 합니다 — 여기서
+// 삼켜버리면 로그인 성공 후 리다이렉트까지 막혀버립니다.
+export async function loginAction(formData: FormData) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      redirect("/login?error=1");
+    }
+    throw error;
+  }
+}
+
+export async function logoutAction() {
+  await signOut({ redirectTo: "/" });
 }
