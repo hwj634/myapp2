@@ -2,7 +2,7 @@
 
 import { startTransition, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { likeproductAction } from "@/lib/actions";
+import { likeProductAction } from "@/lib/actions";
 
 export function LikeButton({
   id,
@@ -20,7 +20,7 @@ export function LikeButton({
       disabled={ispending}
       onClick={() => {
         startTransition(async () => {
-          const newLikes = await likeproductAction(id);
+          const newLikes = await likeProductAction(id);
           setlikes(newLikes);
         });
       }}

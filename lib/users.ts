@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { connectDB } from "./mongodb";
-import { User } from "@/models/User";
+import { User } from "@/models/Users";
 
 // 비밀번호 해싱 강도(salt round). 숫자가 클수록 안전하지만 느려집니다.
 // 10~12 정도가 실무에서 흔히 쓰는 기본값입니다.
