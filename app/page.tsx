@@ -14,29 +14,61 @@ export default function Home() {
         </span>
 
         <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
-          웹서버보안프로그래밍 — 한우정
+          웹서버보안프로그래밍 — 11주차
         </h1>
         <p className="max-w-md text-base leading-7 text-zinc-600 dark:text-zinc-400">
-          create-next-app으로 만든 Next.js 16 App Router 템플릿입니다. 이
-          페이지는 서버에서 렌더링되고, 아래 카운터는 브라우저에서 동작하는
-          별도의 Client Component입니다.
+          장바구니가 이제 진짜 주문(Order)으로 이어집니다. 로그인 후
+          &ldquo;결제하기&rdquo;를 눌러보고, 본인 주문만 보이는지
+          &ldquo;주문내역&rdquo;에서 확인해보세요.
         </p>
 
         {/* Counter는 useState를 쓰는 Client Component 입니다. */}
         <Counter />
 
-        <Link
-          href="/about"
-          className="text-sm font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
-        >
-          /about 페이지로 이동 (파일 기반 라우팅 확인) →
-        </Link>
-        <Link
-          href="/products"
-          className="text-sm font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
-        >
-          /products 페이지로 이동 (파일 기반 라우팅 확인) →
-        </Link>
+        <div className="flex flex-col gap-2 text-sm">
+          <Link
+            href="/products"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /products — 쇼핑몰 코스 프로젝트: 상품 카탈로그 →
+          </Link>
+          <Link
+            href="/cart"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /cart — 장바구니 (로그인하면 결제 가능) →
+          </Link>
+          <Link
+            href="/orders"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /orders — 11주차 신규: 내 주문 내역 (로그인 필요) →
+          </Link>
+          <Link
+            href="/notices"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /notices — 9주차까지의 코스 프로젝트: 공지사항 게시판 →
+          </Link>
+          <Link
+            href="/register"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /register — Auth.js 회원가입 (비밀번호 해싱) →
+          </Link>
+          <Link
+            href="/about"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /about — File-based Routing 확인 →
+          </Link>
+          <Link
+            href="/api/hello"
+            className="font-medium text-zinc-950 underline underline-offset-4 dark:text-zinc-50"
+          >
+            /api/hello — Route Handler가 응답하는 JSON 확인 →
+          </Link>
+        </div>
       </main>
     </div>
   );

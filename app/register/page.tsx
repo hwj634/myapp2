@@ -14,8 +14,7 @@ export default function RegisterPage() {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="name"
-            className="text-sm font-medium
-           text-zinc-700 dark:text-zinc-300"
+            className="text-sm font-medium text-zinc-700 dark:text-zinc-300"
           >
             이름
           </label>
@@ -24,8 +23,7 @@ export default function RegisterPage() {
             name="name"
             type="text"
             required
-            className="rounded-md border border-black/8 px-3 py-2 text-sm outline-none
-             focus:border-zinc-400 dark:border-white/[.145] dark:bg-transparent"
+            className="rounded-md border border-black/[.08] px-3 py-2 text-sm outline-none focus:border-zinc-400 dark:border-white/[.145] dark:bg-transparent"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -40,7 +38,7 @@ export default function RegisterPage() {
             name="email"
             type="email"
             required
-            className="rounded-md border border-black/8 px-3 py-2 text-sm outline-none focus:border-zinc-400 dark:border-white/[.145] dark:bg-transparent"
+            className="rounded-md border border-black/[.08] px-3 py-2 text-sm outline-none focus:border-zinc-400 dark:border-white/[.145] dark:bg-transparent"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -56,8 +54,7 @@ export default function RegisterPage() {
             type="password"
             required
             minLength={8}
-            className="rounded-md border border-black/8 px-3 py-2 text-sm outline-none focus:border-zinc-400
-             dark:border-white/[.145] dark:bg-transparent"
+            className="rounded-md border border-black/[.08] px-3 py-2 text-sm outline-none focus:border-zinc-400 dark:border-white/[.145] dark:bg-transparent"
           />
         </div>
         <SubmitButton label="가입하고 로그인" />

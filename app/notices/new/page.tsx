@@ -23,7 +23,7 @@ export default async function NewNoticePage() {
         <span className="font-medium text-zinc-700 dark:text-zinc-300">
           {session.user.name}
         </span>{" "}
-        ({session.user.email})
+        (로그인 세션에서 자동으로 채워집니다 — 직접 입력하지 않습니다)
       </p>
       <form action={createNoticeAction} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
